@@ -1,0 +1,22 @@
+.DS_Store
+.thumbs.db
+node_modules
+package-lock.json
+uv.lock
+
+# Editor directories and files
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# local .env files
+.env
+
+# py
+__pycache__
+.python-version
+
+#docker
+.dockerignore

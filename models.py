@@ -16,8 +16,8 @@ class UserModel(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True)
     telegram_id: Mapped[int] = mapped_column(BigInteger)
-    username: Mapped[str] = mapped_column(String(32))
-    first_name: Mapped[str | None]
+    first_name: Mapped[str]
+    username: Mapped[str | None]
     last_name: Mapped[str | None]
     registered_at: Mapped[datetime.datetime] = mapped_column(server_default=sa.func.now())
     is_admin: Mapped[bool] = mapped_column(default=False)

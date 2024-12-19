@@ -23,25 +23,25 @@ class Settings(BaseSettings):
 
     TOKEN: str
 
-    def build_database_uri(self, path: str) -> PostgresDsn:
+    def build_database_uri(self, scheme: str) -> PostgresDsn:
         return MultiHostUrl.build(
-            scheme='postgresql',
+            scheme=scheme,
             username=self.POSTGRES_USER,
             password=self.POSTGRES_PASSWORD,
             host=self.POSTGRES_HOST,
             port=self.POSTGRES_PORT,
-            path=path,
+            path=self.POSTGRES_DB,
         )
     
     @computed_field
     @property
     def SQLALCHEMY_DATABASE_URI(self) -> str:
-        return str(self.build_database_uri(self.POSTGRES_DB))
+        return str(self.build_database_uri('postgresql+asyncpg'))
 
     @computed_field
     @property
     def SQLALCHEMY_CREATE_DATABASE_URI(self) -> str:
-        return str(self.build_database_uri('postgres'))
+        return str(self.build_database_uri('postgresql'))
 
 
 settings = Settings()

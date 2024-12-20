@@ -1,13 +1,10 @@
 import datetime
 
 import sqlalchemy as sa
-from sqlalchemy.orm import DeclarativeBase
-from sqlalchemy import BigInteger, String, UniqueConstraint
+from sqlalchemy import BigInteger, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column
 
-
-class Base(DeclarativeBase):
-    pass
+from core.db import Base
 
 
 class UserModel(Base):

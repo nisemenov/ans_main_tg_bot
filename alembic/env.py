@@ -16,7 +16,8 @@ if config.config_file_name is not None:
 
 # add your model's MetaData object here
 # for 'autogenerate' support
-from models import Base
+from bot.models import UserModel
+from core.db import Base
 
 target_metadata = Base.metadata
 # target_metadata = None
@@ -26,7 +27,7 @@ target_metadata = Base.metadata
 # my_important_option = config.get_main_option("my_important_option")
 # ... etc.
 
-from config import settings
+from core.config import settings
 
 def get_url():
     return str(settings.SQLALCHEMY_CREATE_DATABASE_URI)

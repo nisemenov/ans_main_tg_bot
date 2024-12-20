@@ -2,19 +2,16 @@ import sqlalchemy as sa
 
 import pytest
 
-from bot.utils import user_register
-from schemas import UserBase
-
-from models import UserModel
-
-from db import async_session
-from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, async_sessionmaker
+from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 from aiogram.types import User
+
+from bot.utils import user_register
+from bot.models import UserModel
+
 
 pytestmark = pytest.mark.anyio
 
-
-user = User(
+TEST_USER = User(
     id=1,
     is_bot=False,
     first_name='John',
@@ -24,11 +21,14 @@ user = User(
     email='johndoe@test.com'
 )
 
-async def test_user_register(sessionmaker: async_sessionmaker[AsyncSession]) -> None:
-    await user_register(user)
+async def test_user_register() -> None:
+    result = await user_register(TEST_USER)
 
-    async with sessionmaker.begin() as session:
-        result = await session.execute(sa.select(UserModel).filter_by(telegram_id=user.id))
-        result: UserModel = result.scalar()
+    assert result['user'].first_name == TEST_USER.first_name
+    assert result['msg'] == 'Вы успешно зарегистрировались в системе.'
 
-        assert result.first_name == user.first_name
+
+async def test_existing_user_register() -> None:
+    result = await user_register(TEST_USER)
+
+    assert result['msg'] == 'Вы уже зерегистрированы в системе.'

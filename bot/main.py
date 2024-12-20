@@ -2,16 +2,16 @@ import asyncio
 import logging
 import sys
 
-from aiogram import Bot, Dispatcher
+from aiogram import Bot, Dispatcher, html
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 from aiogram.filters import CommandStart
 from aiogram.types import Message
 
-from db import check_db
-from utils import user_register
+from core.config import settings
+from core.db import check_db
 
-from config import settings
+from .utils import user_register
 
 
 dp = Dispatcher()
@@ -19,8 +19,12 @@ dp = Dispatcher()
 
 @dp.message(CommandStart())
 async def command_start_handler(message: Message) -> None:
+    result = await user_register(message.from_user)
+    await message.answer(
+        f'Добрый день, {html.bold(message.from_user.full_name)}!\n'
+        f'{result['msg']}'
+    )
 
-    await user_register(message.from_user)
 
 async def main() -> None:
     await check_db()

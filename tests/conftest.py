@@ -10,9 +10,9 @@ from sqlalchemy.pool import NullPool
 from sqlalchemy_utils import create_database, database_exists, drop_database
 from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, async_sessionmaker, create_async_engine
 
-from db import async_session
-from models import Base
-from config import Settings
+from core.db import sqlalchemy_config as config
+from bot.models import Base
+from core.config import Settings
 
 if TYPE_CHECKING:
     from typing import AsyncGenerator
@@ -34,7 +34,7 @@ class TestSettings(Settings):
             password=self.POSTGRES_PASSWORD,
             host=self.POSTGRES_HOST,
             port=self.POSTGRES_PORT,
-            path='test_database',
+            path='test_ans_main_tg_bot',
         )
 
 
@@ -53,7 +53,7 @@ async def fx_db() -> AsyncGenerator[None]:
         create_database(test_settings.SQLALCHEMY_CREATE_DATABASE_URI)
     yield
 
-    # drop_database(str(test_settings.SQLALCHEMY_CREATE_DATABASE_URI))
+    drop_database(str(test_settings.SQLALCHEMY_CREATE_DATABASE_URI))
 
 
 @pytest.fixture(name='engine', scope='module')
@@ -71,11 +71,11 @@ def fx_session_maker_factory(engine: AsyncEngine) -> async_sessionmaker[AsyncSes
 
 # changing DB string
 @pytest.fixture(autouse=True)
-async def fx_sqlalchemy_config(engine: AsyncEngine, monkeypatch: pytest.MonkeyPatch) -> None:
+async def fx_sqlalchemy_config(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr(
-        async_session, 
-        'bind', 
-        engine
+        config, 
+        'connection_string', 
+        test_settings.SQLALCHEMY_DATABASE_URI
     )
 
 

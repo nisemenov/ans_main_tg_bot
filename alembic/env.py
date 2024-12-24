@@ -16,8 +16,7 @@ if config.config_file_name is not None:
 
 # add your model's MetaData object here
 # for 'autogenerate' support
-from bot.models import UserModel
-from core.db import Base
+from core.models import *
 
 target_metadata = Base.metadata
 # target_metadata = None

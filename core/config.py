@@ -80,3 +80,8 @@ class SQLAlchemyConfig:
         async with session_maker() as session:
             async with session.begin():
                 yield session
+
+
+sqlalchemy_config = SQLAlchemyConfig(
+    connection_string=settings.SQLALCHEMY_DATABASE_URI,
+)

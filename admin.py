@@ -1,8 +1,8 @@
 from fastapi import FastAPI
 from sqladmin import Admin, ModelView
 
-from core.db import sqlalchemy_config as config
-from bot.models import UserModel
+from core.config import sqlalchemy_config as config
+from core.models import UserModel, ServiceModel
 
 
 app = FastAPI()
@@ -15,4 +15,9 @@ class UserAdmin(ModelView, model=UserModel):
     column_list = '__all__'
 
 
+class ServiceAdmin(ModelView, model=ServiceModel):
+    column_list = '__all__'
+
+
 admin.add_view(UserAdmin)
+admin.add_view(ServiceAdmin)

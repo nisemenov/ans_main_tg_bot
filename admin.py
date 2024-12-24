@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from sqladmin import Admin, ModelView
 
 from core.config import sqlalchemy_config as config
-from core.models import UserModel, ServiceModel
+from core.models import UserModel, ServiceModel, NotificationModel
 
 
 app = FastAPI()
@@ -19,5 +19,10 @@ class ServiceAdmin(ModelView, model=ServiceModel):
     column_list = '__all__'
 
 
+class NotificationAdmin(ModelView, model=NotificationModel):
+    column_list = '__all__'
+
+
 admin.add_view(UserAdmin)
 admin.add_view(ServiceAdmin)
+admin.add_view(NotificationAdmin)

@@ -88,3 +88,13 @@ async def fx_drop_create_meta(engine: AsyncEngine) -> AsyncIterator[None]:
         await conn.run_sync(Base.metadata.drop_all)
         await conn.run_sync(Base.metadata.create_all)
     yield
+
+
+# filling DB with mocks
+@pytest.fixture(scope='module', autouse=True)
+async def fx_mock(
+    sessionmaker: async_sessionmaker[AsyncSession]
+) -> AsyncIterator[None]:
+    
+    await user_instances(sessionmaker)
+    yield

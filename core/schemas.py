@@ -8,3 +8,8 @@ class UserBase(BaseModel):
     last_name: str | None = None
     is_admin: bool = False
     email: EmailStr | None = None
+
+
+class NotificationBase(BaseModel):
+    message: str
+    service: str

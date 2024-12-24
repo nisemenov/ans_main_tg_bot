@@ -44,8 +44,25 @@ class ServiceModel(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     title: Mapped[str]
 
+    notifications: Mapped[list[NotificationModel]] = relationship(
+        back_populates='service'
+    )
+
     def __repr__(self):
         return f'<Service {self.title} / {self.id}>'
+    
+
+class NotificationModel(Base):
+    __tablename__ = 'notifications'
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    message: Mapped[str]
+    
+    service: Mapped[ServiceModel] = relationship(back_populates='notifications')
+    service_id: Mapped[int] = mapped_column(ForeignKey('services.id'))
+
+    def __repr__(self):
+        return f'<Notification {self.id}>'
 
 
 class UserServiceAssociation(Base):

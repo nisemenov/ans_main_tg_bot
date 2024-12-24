@@ -4,10 +4,10 @@ from typing import TYPE_CHECKING
 
 from sqlalchemy.exc import IntegrityError
 
-from core.db import sqlalchemy_config as config
+from core.config import sqlalchemy_config as config
 
-from bot.schemas import UserBase
-from bot.models import UserModel
+from core.schemas import UserBase
+from core.models import UserModel
 
 if TYPE_CHECKING:
     from aiogram.types import User

@@ -9,7 +9,7 @@ from aiogram.filters import CommandStart
 from aiogram.types import Message
 
 from core.config import settings
-from core.db import check_db
+from core.utils import check_db
 
 from .utils import user_register
 

@@ -3,23 +3,15 @@ import sqlalchemy as sa
 import pytest
 
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
+from sqlalchemy.orm import selectinload
 from aiogram.types import User
 
 from bot.utils import user_register
-from bot.models import UserModel
+from core.models import UserModel
+from tests.data_fixtures import TEST_USER
 
 
 pytestmark = pytest.mark.anyio
-
-TEST_USER = User(
-    id=1,
-    is_bot=False,
-    first_name='John',
-    username='johnDoe',
-    last_name='Doe',
-    is_admin=True,
-    email='johndoe@test.com'
-)
 
 async def test_user_register() -> None:
     result = await user_register(TEST_USER)
@@ -28,7 +20,7 @@ async def test_user_register() -> None:
     assert result['msg'] == 'Вы успешно зарегистрировались в системе.'
 
 
-async def test_existing_user_register() -> None:
+async def test_existing_user_not_register() -> None:
     result = await user_register(TEST_USER)
 
     assert result['msg'] == 'Вы уже зерегистрированы в системе.'

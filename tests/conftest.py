@@ -10,9 +10,11 @@ from sqlalchemy.pool import NullPool
 from sqlalchemy_utils import create_database, database_exists, drop_database
 from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, async_sessionmaker, create_async_engine
 
-from core.db import sqlalchemy_config as config
-from bot.models import Base
+from core.config import sqlalchemy_config as config
 from core.config import Settings
+from core.models import Base
+
+from .data_fixtures import user_instances
 
 if TYPE_CHECKING:
     from typing import AsyncGenerator
@@ -79,6 +81,7 @@ async def fx_sqlalchemy_config(monkeypatch: pytest.MonkeyPatch) -> None:
     )
 
 
+# drop/create DB meta with mocks
 @pytest.fixture(scope='module', autouse=True)
 async def fx_drop_create_meta(engine: AsyncEngine) -> AsyncIterator[None]:
     async with engine.begin() as conn:
